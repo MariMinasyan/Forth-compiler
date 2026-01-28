@@ -107,3 +107,48 @@ Some **specifications:**
 Everything **below** the top two values is left unchanged by `swap`, `nip`, and `tuck`.
 
 ---
+
+## Translation Details
+
+1. **The CPU stack as the Forth data stack**
+
+   * Using `pushq` and `popq` to implement Forth pushes and pops.
+   * The bottom of the logical Forth stack corresponds to deeper stack addresses; the top of the Forth stack is at `(%rsp)`.
+
+
+2. **Printing (`.` and `.s`) with `printf`**
+
+   * Using `printf` from `libc` whenever the Forth code uses `.` or `.s`.
+   * Puting a format string in `.rodata`, e.g.:
+
+     ```asm
+     .section .rodata
+     ```
+
+   fmt_int:
+   .asciz "%ld\n"
+
+   ````
+
+   - Following the System V AMD64 calling convention for `printf`:
+
+   - `%rdi` → pointer to format string (`fmt_int`).
+   - `%rsi` → value to print (for integers).
+   - Clear `%rax` before calling `printf` (for variadic functions).
+
+
+3. **`. (dot)`**
+
+   * Forth `.`
+   * Pop the top of the data stack into a register.
+   * Call `printf` to print it.
+   * After printing, that value should no longer be on the stack (just like Forth).
+
+5. **`.s` (dot-s)**
+
+   * Forth `.s`
+   * Print **all** current stack values from **bottom to top**.
+   * Do **not** change the logical contents of the stack after `.s` returns.
+
+---
+
