@@ -151,4 +151,36 @@ Everything **below** the top two values is left unchanged by `swap`, `nip`, and 
    * Do **not** change the logical contents of the stack after `.s` returns.
 
 ---
+## Files
+
+* **Input**
+
+  * `code.fs` – Forth program.
+ 
+* **Compiler**
+  * `ForthCompiler.java` - the compiler
+
+* **Output**
+
+  * `code.s` – the assembly translation of `code.fs`.
+  * `code` - executable obtained with the compiler by **as** and **ld** commands
+
+A simple `Makefile` that can build with:
+
+```bash
+make
+```
+
+---
+
+## How to run
+
+- The compiler can be called via command-line, accepting a file path to the Forth source code:
+  ```bash
+  javac ForthCompiler.java
+  java ForthCompiler code.fs
+  ````
+- First compile it, then run it on the Forth source.
+- The above java compiler compilation and run is in the **Makefile**(simply can type make)
+
 
